@@ -1,0 +1,168 @@
+/* Ghi chú */
+.note {
+    top: 50px;
+    left: 50px;
+    width: 200px;
+    min-height: 30px;
+    background-color: #fff8b5;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    border: 1px solid #ccc;
+    padding: 10px;
+    position: absolute;
+    cursor: move;
+}
+
+/* Bảng chính */
+#board {
+    background: #c38e58;
+    min-height: 100vh;
+    height: 100vh;
+    padding: 35px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+}
+
+/* Tiêu đề */
+.editable-title {
+    display: inline-block;
+    min-width: 150px;
+    border-bottom: 1px dashed gray;
+    margin-left: 5px;
+}
+
+/* Ẩn nội dung */
+.note-content.hidden {
+    display: none;
+}
+
+/* Menu */
+.menu {
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.menu ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+}
+.menu li {
+    display: inline;
+    margin: 0 15px;
+}
+.menu a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Context menu */
+.context-menu {
+    position: fixed;
+    z-index: 9999;
+    display: none;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.context-menu button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: red;
+    font-weight: bold;
+}
+
+/* Navbar light */
+#mainNavbar {
+    background-color: #0d6efd;
+    color: white;
+}
+#mainNavbar .nav-link {
+    color: white;
+}
+#mainNavbar .nav-link:hover {
+    color: #dcdcdc;
+}
+
+/* Dark mode */
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+body.dark-mode .note {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border: 1px solid #333;
+}
+body.dark-mode input,
+body.dark-mode [contenteditable="true"] {
+    background-color: #2a2a2a;
+    color: #fff;
+    border: 1px solid #444;
+}
+body.dark-mode .editable-title {
+    color: #fff;
+}
+body.dark-mode #toggleModeBtn {
+    background-color: #333;
+    color: #fff;
+    border-color: #666;
+}
+body.dark-mode #mainNavbar {
+    background-color: #1f1f1f;
+    color: #fff;
+}
+body.dark-mode #mainNavbar .nav-link {
+    color: #ddd;
+}
+body.dark-mode #mainNavbar .nav-link:hover {
+    color: #fff;
+}
+body.dark-mode {
+  background-color: #121212; /* nền tối */
+  color: #ffffff; /* chữ sáng */
+}
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+note-item {
+    border: 2px solid #ccc;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.dark-mode .note-item {
+    background-color: #1e1e1e;
+    border-color: #444;
+}
+
+.note-item input[type="checkbox"] {
+    transform: scale(1.2);
+    margin-right: 10px;
+}
+
+.note-item.completed {
+    opacity: 0.6;
+    text-decoration: line-through;
+}
+body.dark-mode .text-muted {
+  color: #ccc !important;
+}
+.search-input {
+    width: 80%;
+    padding: 8px 12px;
+    margin: 10px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
