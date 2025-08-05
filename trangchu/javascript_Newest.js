@@ -146,7 +146,6 @@ function enableDragging(note) {
         isDragging = false;
         saveNotesToLocalStorage();
     });
-}
 // --- Sự kiện cảm ứng (điện thoại) ---
   note.addEventListener("touchstart", function (e) {
     bringNoteToFront(note);
@@ -163,7 +162,7 @@ function enableDragging(note) {
       note.style.top = (touch.clientY - offsetY) + "px";
     }
   });
-
+}
   document.addEventListener("touchend", function () {
     if (isDragging) {
       isDragging = false;
@@ -329,3 +328,4 @@ document.getElementById("deleteAllBtn").addEventListener("click", () => {
     }
 
 });
+
