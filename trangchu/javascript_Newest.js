@@ -127,9 +127,10 @@ createBtn.addEventListener("click", function(e) {
 function enableDragging(note) {
     let isDragging = false;
     let offsetX, offsetY;
-// --- Sự kiện click chuột (PC) ---
+
+    // Kéo bằng chuột (PC)
     note.addEventListener("mousedown", function(e) {
-      bringNoteToFront(note);
+        bringNoteToFront(note);
         isDragging = true;
         offsetX = e.clientX - note.offsetLeft;
         offsetY = e.clientY - note.offsetTop;
@@ -141,20 +142,34 @@ function enableDragging(note) {
             note.style.top = (e.clientY - offsetY) + "px";
         }
     });
+
     document.addEventListener("mouseup", function() {
         isDragging = false;
         saveNotesToLocalStorage();
     });
-    // Hỗ trợ kéo trên điện thoại
-note.addEventListener("touchstart", (e) => {
-  const touch = e.touches[0];
-  startDrag({
-    clientX: touch.clientX,
-    clientY: touch.clientY,
-    target: e.target,
-    preventDefault: () => e.preventDefault()
-  });
-}, { passive: false });
+
+    // Kéo bằng cảm ứng (điện thoại)
+    note.addEventListener("touchstart", function(e) {
+        bringNoteToFront(note);
+        const touch = e.touches[0];
+        isDragging = true;
+        offsetX = touch.clientX - note.offsetLeft;
+        offsetY = touch.clientY - note.offsetTop;
+    }, { passive: false });
+
+    note.addEventListener("touchmove", function(e) {
+        if (isDragging) {
+            const touch = e.touches[0];
+            note.style.left = (touch.clientX - offsetX) + "px";
+            note.style.top = (touch.clientY - offsetY) + "px";
+            e.preventDefault(); // Ngăn cuộn màn hình khi kéo
+        }
+    }, { passive: false });
+
+    note.addEventListener("touchend", function() {
+        isDragging = false;
+        saveNotesToLocalStorage();
+    });
 }
 // Hàm Enter để thêm checkbox
 function enableEnterToAddCheckbox(noteElement) {
@@ -314,6 +329,7 @@ document.getElementById("deleteAllBtn").addEventListener("click", () => {
     }
 
 });
+
 
 
 
