@@ -141,7 +141,6 @@ function enableDragging(note) {
             note.style.top = (e.clientY - offsetY) + "px";
         }
     });
-
     document.addEventListener("mouseup", function() {
         isDragging = false;
         saveNotesToLocalStorage();
@@ -162,7 +161,6 @@ function enableDragging(note) {
       note.style.top = (touch.clientY - offsetY) + "px";
     }
   });
-}
   document.addEventListener("touchend", function () {
     if (isDragging) {
       isDragging = false;
@@ -328,4 +326,5 @@ document.getElementById("deleteAllBtn").addEventListener("click", () => {
     }
 
 });
+
 
