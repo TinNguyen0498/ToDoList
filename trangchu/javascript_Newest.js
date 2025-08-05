@@ -145,7 +145,16 @@ function enableDragging(note) {
         isDragging = false;
         saveNotesToLocalStorage();
     });
-    
+    // Hỗ trợ kéo trên điện thoại
+note.addEventListener("touchstart", (e) => {
+  const touch = e.touches[0];
+  startDrag({
+    clientX: touch.clientX,
+    clientY: touch.clientY,
+    target: e.target,
+    preventDefault: () => e.preventDefault()
+  });
+}, { passive: false });
 }
 // Hàm Enter để thêm checkbox
 function enableEnterToAddCheckbox(noteElement) {
@@ -305,6 +314,7 @@ document.getElementById("deleteAllBtn").addEventListener("click", () => {
     }
 
 });
+
 
 
 
