@@ -65,6 +65,8 @@ function createNoteElement() {
   }
 });
     note.addEventListener("mousedown", () => bringNoteToFront(note));
+
+    
     note.appendChild(checkHoanThanh);
     note.appendChild(label);
     note.appendChild(ngayTao);
@@ -125,7 +127,7 @@ createBtn.addEventListener("click", function(e) {
 function enableDragging(note) {
     let isDragging = false;
     let offsetX, offsetY;
-
+// --- Sự kiện click chuột (PC) ---
     note.addEventListener("mousedown", function(e) {
       bringNoteToFront(note);
         isDragging = true;
@@ -145,7 +147,30 @@ function enableDragging(note) {
         saveNotesToLocalStorage();
     });
 }
+// --- Sự kiện cảm ứng (điện thoại) ---
+  note.addEventListener("touchstart", function (e) {
+    bringNoteToFront(note);
+    isDragging = true;
+    const touch = e.touches[0];
+    offsetX = touch.clientX - note.offsetLeft;
+    offsetY = touch.clientY - note.offsetTop;
+  });
 
+  document.addEventListener("touchmove", function (e) {
+    if (isDragging) {
+      const touch = e.touches[0];
+      note.style.left = (touch.clientX - offsetX) + "px";
+      note.style.top = (touch.clientY - offsetY) + "px";
+    }
+  });
+
+  document.addEventListener("touchend", function () {
+    if (isDragging) {
+      isDragging = false;
+      saveNotesToLocalStorage();
+    }
+  });
+}
 // Hàm Enter để thêm checkbox
 function enableEnterToAddCheckbox(noteElement) {
         noteElement.addEventListener("keydown", function (e) {
@@ -302,4 +327,5 @@ document.getElementById("deleteAllBtn").addEventListener("click", () => {
 
         alert("Đã xoá toàn bộ ghi chú!");
     }
+
 });
