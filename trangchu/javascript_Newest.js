@@ -145,28 +145,7 @@ function enableDragging(note) {
         isDragging = false;
         saveNotesToLocalStorage();
     });
-// --- Sự kiện cảm ứng (điện thoại) ---
-  note.addEventListener("touchstart", function (e) {
-    bringNoteToFront(note);
-    isDragging = true;
-    const touch = e.touches[0];
-    offsetX = touch.clientX - note.offsetLeft;
-    offsetY = touch.clientY - note.offsetTop;
-  });
-
-  document.addEventListener("touchmove", function (e) {
-    if (isDragging) {
-      const touch = e.touches[0];
-      note.style.left = (touch.clientX - offsetX) + "px";
-      note.style.top = (touch.clientY - offsetY) + "px";
-    }
-  });
-  document.addEventListener("touchend", function () {
-    if (isDragging) {
-      isDragging = false;
-      saveNotesToLocalStorage();
-    }
-  });
+    
 }
 // Hàm Enter để thêm checkbox
 function enableEnterToAddCheckbox(noteElement) {
@@ -326,5 +305,6 @@ document.getElementById("deleteAllBtn").addEventListener("click", () => {
     }
 
 });
+
 
 
