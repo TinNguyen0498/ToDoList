@@ -20,9 +20,25 @@ function renderNotes(notes) {
     const card = document.createElement("div");
     card.className = "note-item";
 
+    // Kiểm tra deadline
+    let deadlineText = "Không có deadline";
+    let isOverdue = false;
+
+    if (note.deadline) {
+      deadlineText = note.deadline;
+
+      const now = new Date();
+      const deadlineDate = new Date(note.deadline);
+      if (now >= deadlineDate) {
+        isOverdue = true;
+        card.style.border = "2px solid red"; // viền đỏ khi quá hạn
+      }
+    }
+
     card.innerHTML = `
       <h5 contenteditable="true" class="note-title">${note.title}</h5>
       <p><small class="text-muted">Tạo lúc: ${note.createdAt}</small></p>
+      <p><small class="text-muted">Deadline: ${deadlineText}</small></p>
       <div class="form-check mb-2">
         <input type="checkbox" class="form-check-input note-completed" ${note.isCompleted ? "checked" : ""}>
         <label class="form-check-label">Đã hoàn thành</label>
