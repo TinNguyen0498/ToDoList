@@ -166,3 +166,7 @@ body.dark-mode .text-muted {
     border: 1px solid #ccc;
     font-size: 16px;
 }
+.note input[type="datetime-local"] {
+  width: 170px; 
+  font-size: 13px; 
+}
