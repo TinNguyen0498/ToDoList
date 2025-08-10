@@ -159,9 +159,9 @@ body.dark-mode .text-muted {
   color: #ccc !important;
 }
 .search-input {
-    width: 80%;
+    width: calc(100% - 120px);
     padding: 8px 12px;
-    margin: 10px 0;
+    margin-right: 160px;
     border-radius: 6px;
     border: 1px solid #ccc;
     font-size: 16px;
@@ -170,3 +170,4 @@ body.dark-mode .text-muted {
   width: 170px; 
   font-size: 13px; 
 }
+
