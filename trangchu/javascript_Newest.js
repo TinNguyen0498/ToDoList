@@ -55,24 +55,37 @@ function createNoteElement() {
     firstLine.setAttribute("contenteditable", "true");
     firstLine.innerHTML = '<input type="checkbox">';
 
+
     const titleEditable = ghiChuTitle.querySelector(".editable-title");
 
     titleEditable.addEventListener("input", function () {
-    const maxLength = 24;
-    if (this.textContent.length > maxLength) {
-    this.textContent = this.textContent.substring(0, maxLength);
-    placeCaretAtEnd(this); // Giữ con trỏ cuối dòng
-  }
-});
+        const maxLength = 24;
+        if (this.textContent.length > maxLength) {
+            this.textContent = this.textContent.substring(0, maxLength);
+            placeCaretAtEnd(this); // Giữ con trỏ cuối dòng
+        }
+    });
+
     note.addEventListener("mousedown", () => bringNoteToFront(note));
 
-    
+    // Thêm input chọn deadline
+    const deadlineInput = document.createElement("input");
+    deadlineInput.type = "datetime-local";
+    deadlineInput.className = "note-deadline";
+
+    // Lưu deadline
+    deadlineInput.addEventListener("change", function () {
+        note.dataset.deadline = this.value;
+    });
+
     note.appendChild(checkHoanThanh);
     note.appendChild(label);
     note.appendChild(ngayTao);
+    note.appendChild(deadlineInput);
     note.appendChild(ghiChuTitle);
     note.appendChild(firstLine);
-
+    
+     
     // Xử lý khi checkbox được nhấn
     checkHoanThanh.addEventListener("change", function () {
     const isChecked = this.checked;
@@ -201,6 +214,7 @@ function enableEnterToAddCheckbox(noteElement) {
     const createdAt = note.querySelector(".note-date").textContent;
     const top = note.style.top;
     const left = note.style.left;
+    const deadline = note.querySelector(".note-deadline")?.value || null;
 
     const content = [];
     note.querySelectorAll("p[contenteditable='true']").forEach(p => {
@@ -211,7 +225,7 @@ function enableEnterToAddCheckbox(noteElement) {
       });
     });
 
-    notesData.push({ id, title, content, isCompleted, createdAt, position: { top, left } });
+    notesData.push({ id, title, content, isCompleted, createdAt, position: { top, left }, deadline });
   });
 
   localStorage.setItem("notes", JSON.stringify(notesData));
@@ -227,7 +241,16 @@ window.addEventListener("DOMContentLoaded", function () {
     note.querySelector(".editable-title").textContent = noteData.title;
     note.querySelector(".checkbox-hoanthanh").checked = noteData.isCompleted;
     note.querySelector(".note-date").textContent = noteData.createdAt;
+    // Gán lại deadline nếu có
+    if (noteData.deadline) {
+      note.querySelector(".note-deadline").value = noteData.deadline;
 
+      const now = new Date();
+      const deadlineDate = new Date(noteData.deadline);
+      if (now >= deadlineDate) {
+        note.style.border = "2px solid red"; // Viền đỏ
+      }
+    }
     const firstLine = note.querySelector("p[contenteditable='true']");
     firstLine.innerHTML = "";
     noteData.content.forEach((line, index) => {
@@ -329,8 +352,26 @@ document.getElementById("deleteAllBtn").addEventListener("click", () => {
     }
 
 });
+function checkDeadlines() {
+  const allNotes = document.querySelectorAll(".note");
+  const now = new Date();
+  const isDarkMode = document.body.classList.contains("dark-mode");
 
+  allNotes.forEach(note => {
+    const deadlineInput = note.querySelector(".note-deadline");
+    if (deadlineInput && deadlineInput.value) {
+      const deadlineDate = new Date(deadlineInput.value);
 
+      if (now >= deadlineDate) {
+        // Hết hạn -> viền đỏ
+        note.style.border = "2px solid red";
+      } else {
+        // Chưa hết hạn -> viền mặc định
+        note.style.border = isDarkMode ? "1px solid white" : "";
+      }
+    }
+  });
+}
 
-
-
+// Check mỗi 10s
+setInterval(checkDeadlines, 10000);
