@@ -137,70 +137,47 @@ createBtn.addEventListener("click", function(e) {
 });
 
 // Kéo bằng chuột (PC)
-note.addEventListener("mousedown", function(e) {
-    bringNoteToFront(note);
-    isDragging = true;
-    offsetX = e.clientX - note.offsetLeft;
-    offsetY = e.clientY - note.offsetTop;
-});
+    note.addEventListener("mousedown", function(e) {
+        bringNoteToFront(note);
+        isDragging = true;
+        offsetX = e.clientX - note.offsetLeft;
+        offsetY = e.clientY - note.offsetTop;
+    });
 
-document.addEventListener("mousemove", function(e) {
-    if (isDragging) {
-        const board = document.getElementById("board");
-        const maxLeft = board.clientWidth - note.offsetWidth;
-        const maxTop = board.clientHeight - note.offsetHeight;
+    document.addEventListener("mousemove", function(e) {
+        if (isDragging) {
+            note.style.left = (e.clientX - offsetX) + "px";
+            note.style.top = (e.clientY - offsetY) + "px";
+        }
+    });
 
-        let newLeft = e.clientX - offsetX;
-        let newTop = e.clientY - offsetY;
+    document.addEventListener("mouseup", function() {
+        isDragging = false;
+        saveNotesToLocalStorage();
+    });
 
-        // Giới hạn
-        newLeft = Math.max(0, Math.min(newLeft, maxLeft));
-        newTop = Math.max(0, Math.min(newTop, maxTop));
-
-        note.style.left = newLeft + "px";
-        note.style.top = newTop + "px";
-    }
-});
-
-document.addEventListener("mouseup", function() {
-    isDragging = false;
-    saveNotesToLocalStorage();
-});
-
-// Kéo bằng cảm ứng (điện thoại)
-note.addEventListener("touchstart", function(e) {
-    bringNoteToFront(note);
-    const touch = e.touches[0];
-    isDragging = true;
-    offsetX = touch.clientX - note.offsetLeft;
-    offsetY = touch.clientY - note.offsetTop;
-}, { passive: false });
-
-note.addEventListener("touchmove", function(e) {
-    if (isDragging) {
-        const board = document.getElementById("board");
-        const maxLeft = board.clientWidth - note.offsetWidth;
-        const maxTop = board.clientHeight - note.offsetHeight;
-
+    // Kéo bằng cảm ứng (điện thoại)
+    note.addEventListener("touchstart", function(e) {
+        bringNoteToFront(note);
         const touch = e.touches[0];
-        let newLeft = touch.clientX - offsetX;
-        let newTop = touch.clientY - offsetY;
+        isDragging = true;
+        offsetX = touch.clientX - note.offsetLeft;
+        offsetY = touch.clientY - note.offsetTop;
+    }, { passive: false });
 
-        // Giới hạn
-        newLeft = Math.max(0, Math.min(newLeft, maxLeft));
-        newTop = Math.max(0, Math.min(newTop, maxTop));
+    note.addEventListener("touchmove", function(e) {
+        if (isDragging) {
+            const touch = e.touches[0];
+            note.style.left = (touch.clientX - offsetX) + "px";
+            note.style.top = (touch.clientY - offsetY) + "px";
+            e.preventDefault(); // Ngăn cuộn màn hình khi kéo
+        }
+    }, { passive: false });
 
-        note.style.left = newLeft + "px";
-        note.style.top = newTop + "px";
-
-        e.preventDefault(); // Ngăn cuộn màn hình khi kéo
-    }
-}, { passive: false });
-
-note.addEventListener("touchend", function() {
-    isDragging = false;
-    saveNotesToLocalStorage();
-});
+    note.addEventListener("touchend", function() {
+        isDragging = false;
+        saveNotesToLocalStorage();
+    });
 // Hàm Enter để thêm checkbox
 function enableEnterToAddCheckbox(noteElement) {
         noteElement.addEventListener("keydown", function (e) {
@@ -392,4 +369,5 @@ function checkDeadlines() {
 
 // Check mỗi 10s
 setInterval(checkDeadlines, 10000);
+
 
